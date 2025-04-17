@@ -1,0 +1,33 @@
+# Binaries
+/url-shortener
+*.exe
+*.out
+*.test
+
+# Build output
+/build/
+
+# Dependency directories
+vendor/
+
+# Go modules
+go.sum
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Docker
+*.env
+.env.*
+docker-compose.override.yml
+
+# Database
+pgdata/
