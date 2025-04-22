@@ -1,29 +1,31 @@
-version: '3.9'
-
 services:
-  db:
-    image: postgres:15
-    container_name: urlshortener_db
-    environment:
-      POSTGRES_DB: url_shortener
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: url-shortener-app
     ports:
-      - "8080:8080"
-    depends_on:
-      - db
+      - "8000:8000"
     environment:
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: user
       DB_PASSWORD: password
-      DB_NAME: url_shortener
+      DB_DBNAME: user
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: urlshortener_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: user
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
   pgdata:

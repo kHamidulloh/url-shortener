@@ -12,6 +12,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -34,6 +35,19 @@ func main() {
 
 	if err != nil {
 		log.Fatalf("❌ Could not connect to database after %d attempts: %v", maxRetries, err)
+	}
+
+	// Создание таблицы, если она не существует
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS urls (
+			id SERIAL PRIMARY KEY,
+			short_url VARCHAR(255) NOT NULL,
+			original_url TEXT NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		);
+	`)
+	if err != nil {
+		log.Fatalf("❌ Error creating table: %v", err)
 	}
 
 	repo := repository.NewURLRepository(db)

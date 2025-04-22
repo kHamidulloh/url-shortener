@@ -45,14 +45,13 @@ func (h *URLHandler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *URLHandler) ResolveURL(w http.ResponseWriter, r *http.Request) {
-	short := chi.URLParam(r, "shortURL")
-	original, err := h.service.Resolve(short)
+	short := chi.URLParam(r, "shortUrl")
+	originalUrl, err := h.service.Resolve(short)
 	if err != nil {
 		respondWirhError(w, http.StatusNotFound, "Not found")
 		return
 	}
-
-	http.Redirect(w, r, original, http.StatusFound)
+	http.Redirect(w, r, originalUrl, http.StatusFound)
 }
 
 func respondWirhError(w http.ResponseWriter, code int, msg string) {
